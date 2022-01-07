@@ -6,7 +6,7 @@
 /*   By: jbosquet <jbosquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 14:27:37 by jbosquet          #+#    #+#             */
-/*   Updated: 2022/01/07 14:59:18 by jbosquet         ###   ########.fr       */
+/*   Updated: 2022/01/07 16:11:41 by jbosquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,12 @@ static void	init_philos(t_philos *philos)
 	{
 		philos->philo[i - 1].id = i;
 		philos->philo[i - 1].nb_eat = 0;
-		philos->philo[i - 1].nb_fork = 1;
+		philos->philo[i - 1].fork_r = 1;
+		if (i == philos->nb_philo)
+			philos->philo[0].fork_l = &philos->philo[i - 1].fork_r;
+		else if (i != 1)
+			philos->philo[i - 1].fork_l = &philos->philo[i - 2].fork_r;
+		pthread_mutex_init(&philos->philo[i - 1].mutex, NULL);
 		i++;
 	}
 }

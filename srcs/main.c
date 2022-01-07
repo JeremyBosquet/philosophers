@@ -6,7 +6,7 @@
 /*   By: jbosquet <jbosquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 13:10:03 by jbosquet          #+#    #+#             */
-/*   Updated: 2022/01/07 14:59:34 by jbosquet         ###   ########.fr       */
+/*   Updated: 2022/01/07 16:10:03 by jbosquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	free_philo(t_philos *philos)
 	free(philos->philo);
 	free(philos->fork);
 	while (i < philos->nb_philo)
-		pthread_mutex_destroy(&philos->fork[i++].mutex);
+		pthread_mutex_destroy(&philos->philo[i++].mutex);
 	pthread_mutex_destroy(&philos->write_mutex);
 }
 
@@ -48,11 +48,13 @@ int	main(int argc, char **argv)
 	if (argc != 5 && argc != 6)
 		return (printf("Erreur: arguments non valide.\n"));
 	init(argv, argc, &philos);
+	printf("Game init:\n");
 	printf("nb_philo  : %d\n", philos.nb_philo);
 	printf("time_die  : %d\n", philos.time_die);
 	printf("time_eat  : %d\n", philos.time_eat);
 	printf("time_sleep: %d\n", philos.time_sleep);
 	printf("must_eat  : %d\n", philos.must_eat);
+	printf("============================\n");
 	free_philo(&philos);
 	return (EXIT_SUCCESS);
 }

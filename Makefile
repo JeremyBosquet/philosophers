@@ -16,7 +16,7 @@ _WHITE		:=	\033[37m
 
 CC := gcc
 
-CFLAGS := -Wall -Wextra -Werror
+CFLAGS := -Wall -Wextra -Werror -fsanitize=address -g3
 
 PROJECT := philo
 

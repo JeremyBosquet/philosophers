@@ -6,7 +6,7 @@
 /*   By: jbosquet <jbosquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 15:31:32 by jbosquet          #+#    #+#             */
-/*   Updated: 2022/01/07 14:58:58 by jbosquet         ###   ########.fr       */
+/*   Updated: 2022/01/07 16:11:54 by jbosquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,12 @@ typedef struct s_fork
 
 typedef struct s_philo
 {
-	int			id;
-	int			nb_eat;
-	int			nb_fork;
-	pthread_t	thread;
+	int				id;
+	int				nb_eat;
+	int				fork_r;
+	int				*fork_l;
+	pthread_mutex_t	mutex;
+	pthread_t		thread;
 }	t_philo;
 
 typedef struct s_philos

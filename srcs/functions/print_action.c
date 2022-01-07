@@ -6,7 +6,7 @@
 /*   By: jbosquet <jbosquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 13:50:12 by jbosquet          #+#    #+#             */
-/*   Updated: 2022/01/07 14:05:31 by jbosquet         ###   ########.fr       */
+/*   Updated: 2022/01/07 16:11:24 by jbosquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	print_action(int action, int philo_id, t_philos *philos)
 {
 	suseconds_t	time;
 
+	pthread_mutex_lock(&philos->write_mutex);
 	time = time_diff(philos->start_time, get_time());
 	if (action == FORK)
 		printf("%d %d %s\n", time, philo_id, "has taken a fork");
@@ -27,4 +28,5 @@ void	print_action(int action, int philo_id, t_philos *philos)
 		printf("%d %d %s\n", time, philo_id, "is thinking");
 	else if (action == DIE)
 		printf("%d %d %s\n", time, philo_id, "died");
+	pthread_mutex_unlock(&philos->write_mutex);
 }
