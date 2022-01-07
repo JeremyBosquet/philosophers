@@ -6,7 +6,7 @@
 /*   By: jbosquet <jbosquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 13:10:03 by jbosquet          #+#    #+#             */
-/*   Updated: 2022/01/07 16:10:03 by jbosquet         ###   ########.fr       */
+/*   Updated: 2022/01/07 16:22:49 by jbosquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,9 @@
 
 • Philosopher number 1 is next to philosopher number ’nb_philo’.
 Any other philosopher with the number N is seated between philosopher N - 1 and philosopher N + 1.
+
+Faire le lancement des Threads %2 pour eviter que tout le monde se vol les fourchettes
+
 */
 
 void	free_philo(t_philos *philos)
