@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbosquet <jbosquet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jbosquet <jbosquet@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 13:10:03 by jbosquet          #+#    #+#             */
-/*   Updated: 2022/01/07 16:22:49 by jbosquet         ###   ########.fr       */
+/*   Updated: 2022/01/08 13:55:44 by jbosquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int	main(int argc, char **argv)
 	printf("time_sleep: %d\n", philos.time_sleep);
 	printf("must_eat  : %d\n", philos.must_eat);
 	printf("============================\n");
+	threads_start(&philos);
 	free_philo(&philos);
 	return (EXIT_SUCCESS);
 }

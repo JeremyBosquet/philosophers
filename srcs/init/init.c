@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbosquet <jbosquet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jbosquet <jbosquet@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 14:27:37 by jbosquet          #+#    #+#             */
-/*   Updated: 2022/01/07 16:11:41 by jbosquet         ###   ########.fr       */
+/*   Updated: 2022/01/08 13:30:07 by jbosquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,11 @@ static void	init_philos(t_philos *philos)
 	{
 		philos->philo[i - 1].id = i;
 		philos->philo[i - 1].nb_eat = 0;
-		philos->philo[i - 1].fork_r = 1;
 		if (i == philos->nb_philo)
 			philos->philo[0].fork_l = &philos->philo[i - 1].fork_r;
 		else if (i != 1)
 			philos->philo[i - 1].fork_l = &philos->philo[i - 2].fork_r;
-		pthread_mutex_init(&philos->philo[i - 1].mutex, NULL);
+		pthread_mutex_init(&philos->philo[i - 1].fork_r, NULL);
 		i++;
 	}
 }
@@ -62,7 +61,6 @@ void	init(char **argv, int argc, t_philos *philos)
 		philos->must_eat = ft_atoi(argv[5]);
 	if (philos->must_eat == 0)
 		exit (EXIT_SUCCESS);
-	philos->start_time = get_time();
 	philos->started = 0;
 	pthread_mutex_init(&philos->write_mutex, NULL);
 	init_philos(philos);

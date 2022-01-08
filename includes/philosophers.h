@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbosquet <jbosquet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jbosquet <jbosquet@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 15:31:32 by jbosquet          #+#    #+#             */
-/*   Updated: 2022/01/07 16:11:54 by jbosquet         ###   ########.fr       */
+/*   Updated: 2022/01/08 13:38:47 by jbosquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,9 @@ typedef struct s_philo
 {
 	int				id;
 	int				nb_eat;
-	int				fork_r;
-	int				*fork_l;
+	pthread_mutex_t	fork_r;
+	pthread_mutex_t	*fork_l;
+	suseconds_t		last_eat;
 	pthread_mutex_t	mutex;
 	pthread_t		thread;
 }	t_philo;
@@ -49,12 +50,18 @@ typedef struct s_philos
 	int				time_sleep;
 	int				must_eat;
 	int				started;
+	void			*info;
 	pthread_mutex_t	write_mutex;
 	suseconds_t		start_time;
 	suseconds_t		last_action_time;
 	t_philo			*philo;
 	t_fork			*fork;
 }	t_philos;
+
+
+//Thread
+void    	threads_start(t_philos *philos);
+void		*philo(t_philos *philos, int i);
 
 //Init
 void		init(char **argv, int argc, t_philos *philos);

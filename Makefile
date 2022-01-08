@@ -16,13 +16,15 @@ _WHITE		:=	\033[37m
 
 CC := gcc
 
-CFLAGS := -Wall -Wextra -Werror -fsanitize=address -g3
+CFLAGS := -Wall -Wextra -Werror
 
 PROJECT := philo
 
 HEADER_SRCS := includes/philosophers.h libft/libft.h
 
 SRCS :=		main.c \
+			threads.c \
+			philo.c \
 			init/init.c \
 			functions/get_time.c \
 			functions/print_action.c \
