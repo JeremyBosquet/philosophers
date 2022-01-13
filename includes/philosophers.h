@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbosquet <jbosquet@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: jbosquet <jbosquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 15:31:32 by jbosquet          #+#    #+#             */
-/*   Updated: 2022/01/08 13:38:47 by jbosquet         ###   ########.fr       */
+/*   Updated: 2022/01/12 11:09:01 by jbosquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,8 @@ typedef struct s_philos
 	t_fork			*fork;
 }	t_philos;
 
-
 //Thread
-void    	threads_start(t_philos *philos);
+void		threads_start(t_philos *philos);
 void		*philo(t_philos *philos, int i);
 
 //Init
