@@ -6,7 +6,7 @@
 /*   By: jbosquet <jbosquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 14:27:37 by jbosquet          #+#    #+#             */
-/*   Updated: 2022/01/13 13:40:07 by jbosquet         ###   ########.fr       */
+/*   Updated: 2022/01/17 15:06:19 by jbosquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,15 @@ static void	init_philos(t_philos *philos)
 	{
 		philos->philo[i - 1].id = i;
 		philos->philo[i - 1].nb_eat = 0;
-		if (i == philos->nb_philo)
-			philos->philo[0].fork_l = &philos->philo[i - 1].fork_r;
-		else if (i != 1)
+		philos->philo[i - 1].dead = 0;
+		if (i != 1 && i != philos->nb_philo)
 			philos->philo[i - 1].fork_l = &philos->philo[i - 2].fork_r;
+		else if (i == philos->nb_philo)
+		{
+			dprintf(1, "ICI %d", i);
+			philos->philo[i - 1].fork_l = &philos->philo[i - 2].fork_r;
+			philos->philo[0].fork_l = &philos->philo[i - 1].fork_r;
+		}
 		pthread_mutex_init(&philos->philo[i - 1].fork_r, NULL);
 		i++;
 	}
@@ -48,6 +53,8 @@ static void	init_forks(t_philos *philos)
 		i++;
 	}
 }
+
+//EDIT ATOI !!
 
 void	init(char **argv, int argc, t_philos *philos)
 {

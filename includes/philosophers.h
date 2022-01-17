@@ -6,7 +6,7 @@
 /*   By: jbosquet <jbosquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 15:31:32 by jbosquet          #+#    #+#             */
-/*   Updated: 2022/01/12 11:09:01 by jbosquet         ###   ########.fr       */
+/*   Updated: 2022/01/17 13:33:07 by jbosquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct s_philo
 {
 	int				id;
 	int				nb_eat;
+	int				dead;
 	pthread_mutex_t	fork_r;
 	pthread_mutex_t	*fork_l;
 	suseconds_t		last_eat;
@@ -58,9 +59,15 @@ typedef struct s_philos
 	t_fork			*fork;
 }	t_philos;
 
+typedef struct s_args
+{
+	t_philos		*philos;
+	int				i;
+}	t_args;
+
 //Thread
 void		threads_start(t_philos *philos);
-void		*philo(t_philos *philos, int i);
+void		*philo(void *args);
 
 //Init
 void		init(char **argv, int argc, t_philos *philos);
