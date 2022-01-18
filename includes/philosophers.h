@@ -6,7 +6,7 @@
 /*   By: jbosquet <jbosquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 15:31:32 by jbosquet          #+#    #+#             */
-/*   Updated: 2022/01/17 13:33:07 by jbosquet         ###   ########.fr       */
+/*   Updated: 2022/01/18 12:20:14 by jbosquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ typedef struct s_philos
 	int				time_sleep;
 	int				must_eat;
 	int				started;
+	int				died;
+	int				all_ate;
 	void			*info;
 	pthread_mutex_t	write_mutex;
 	suseconds_t		start_time;
@@ -76,5 +78,7 @@ void		init(char **argv, int argc, t_philos *philos);
 suseconds_t	get_time(void);
 suseconds_t	time_diff(suseconds_t time1, suseconds_t time2);
 void		print_action(int action, int philo_id, t_philos *philos);
+int			check_death(t_philos *philos);
+int			check_nb_eat(t_philos *philos);
 
 #endif

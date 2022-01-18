@@ -6,7 +6,7 @@
 /*   By: jbosquet <jbosquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 13:10:03 by jbosquet          #+#    #+#             */
-/*   Updated: 2022/01/17 16:53:46 by jbosquet         ###   ########.fr       */
+/*   Updated: 2022/01/18 15:14:44 by jbosquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,10 @@ void	free_philo(t_philos *philos)
 	free(philos->philo);
 	free(philos->fork);
 	while (i < philos->nb_philo)
-		pthread_mutex_destroy(&philos->philo[i++].mutex);
+	{
+		pthread_mutex_destroy(&philos->philo[i].mutex);
+		pthread_join(philos->philo[i++].thread, NULL);
+	}
 	pthread_mutex_destroy(&philos->write_mutex);
 }
 
@@ -58,10 +61,14 @@ int	main(int argc, char **argv)
 	printf("time_sleep: %d\n", philos.time_sleep);
 	printf("must_eat  : %d\n", philos.must_eat);
 	printf("============================\n");
-	//pthread_mutex_lock(philos.philo[philos.nb_philo - 1].fork_l);
 	threads_start(&philos);
 	while (1)
-		;
-	free_philo(&philos);
+	{
+		if (check_nb_eat(&philos) || philos.died)
+		{
+			free_philo(&philos);
+			exit(EXIT_FAILURE);
+		}
+	}
 	return (EXIT_SUCCESS);
 }
