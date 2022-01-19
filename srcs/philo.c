@@ -6,7 +6,7 @@
 /*   By: jbosquet <jbosquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 12:40:14 by jbosquet          #+#    #+#             */
-/*   Updated: 2022/01/18 15:30:20 by jbosquet         ###   ########.fr       */
+/*   Updated: 2022/01/19 16:59:56 by jbosquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 void	p_eat(t_philos *philos, int i)
 {
 	//pthread_mutex_lock(&philos->philo[i].mutex);
-	pthread_mutex_lock(philos->philo[i].fork_l);
-	print_action(FORK, philos->philo[i].id, philos);
 	pthread_mutex_lock(&philos->philo[i].fork_r);
+	print_action(FORK, philos->philo[i].id, philos);
+	pthread_mutex_lock(philos->philo[i].fork_l);
 	print_action(FORK, philos->philo[i].id, philos);
 	philos->philo[i].last_eat = get_time();
 	print_action(EAT, philos->philo[i].id, philos);
@@ -91,9 +91,11 @@ void	*philo(void *param)
 			p_eat(args->philos, i);
 			if (args->philos->must_eat != -1 && args->philos->all_ate)
 				return (NULL);
-			print_action(SLEEP, args->philos->philo[i].id, args->philos);
+			if (!args->philos->all_ate)
+				print_action(SLEEP, args->philos->philo[i].id, args->philos);
 			usleep(args->philos->time_sleep * 1000);
-			print_action(THINK, args->philos->philo[i].id, args->philos);
+			if (!args->philos->all_ate)
+				print_action(THINK, args->philos->philo[i].id, args->philos);
 		}
 		else
 			return (NULL);
