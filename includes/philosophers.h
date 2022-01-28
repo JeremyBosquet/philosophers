@@ -6,7 +6,7 @@
 /*   By: jbosquet <jbosquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 15:31:32 by jbosquet          #+#    #+#             */
-/*   Updated: 2022/01/28 11:58:43 by jbosquet         ###   ########.fr       */
+/*   Updated: 2022/01/28 13:14:15 by jbosquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void		*philo(void *args);
 void		init(char **argv, int argc, t_philos *philos);
 
 //Functions
+int			ft_atoi_simplified(const char *str);
 suseconds_t	get_time(void);
 suseconds_t	time_diff(suseconds_t time1, suseconds_t time2);
 void		print_action(int action, int philo_id, t_philos *philos);

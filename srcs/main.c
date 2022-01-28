@@ -6,7 +6,7 @@
 /*   By: jbosquet <jbosquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 13:10:03 by jbosquet          #+#    #+#             */
-/*   Updated: 2022/01/28 11:56:49 by jbosquet         ###   ########.fr       */
+/*   Updated: 2022/01/28 13:44:15 by jbosquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	main(int argc, char **argv)
 	t_philos	philos;
 
 	if (argc != 5 && argc != 6)
-		return (printf("Erreur: arguments non valide.\n"));
+		return (printf("Error: arguments.\n") * 0 + 1);
 	init(argv, argc, &philos);
 	threads_start(&philos);
 	while (1)

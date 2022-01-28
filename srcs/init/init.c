@@ -6,11 +6,19 @@
 /*   By: jbosquet <jbosquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 14:27:37 by jbosquet          #+#    #+#             */
-/*   Updated: 2022/01/18 12:13:40 by jbosquet         ###   ########.fr       */
+/*   Updated: 2022/01/28 13:49:46 by jbosquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
+
+static void	ft_hard_one(int time_die)
+{
+	write(1, "0 1 has taken a fork\n", 21);
+	smart_sleep(time_die);
+	printf("%d 1 died\n", time_die);
+	exit(EXIT_FAILURE);
+}
 
 static void	init_philos(t_philos *philos)
 {
@@ -53,18 +61,18 @@ static void	init_forks(t_philos *philos)
 	}
 }
 
-//EDIT ATOI !!
-
 void	init(char **argv, int argc, t_philos *philos)
 {
-	philos->nb_philo = ft_atoi(argv[1]);
-	philos->time_die = ft_atoi(argv[2]);
-	philos->time_eat = ft_atoi(argv[3]);
-	philos->time_sleep = ft_atoi(argv[4]);
+	philos->nb_philo = ft_atoi_simplified(argv[1]);
+	philos->time_die = ft_atoi_simplified(argv[2]);
+	philos->time_eat = ft_atoi_simplified(argv[3]);
+	philos->time_sleep = ft_atoi_simplified(argv[4]);
+	if (philos->nb_philo == 1)
+		ft_hard_one(philos->time_die);
 	if (argc == 5)
 		philos->must_eat = -1;
 	else if (argc == 6)
-		philos->must_eat = ft_atoi(argv[5]);
+		philos->must_eat = ft_atoi_simplified(argv[5]);
 	if (philos->must_eat == 0)
 		exit (EXIT_SUCCESS);
 	philos->started = 0;
