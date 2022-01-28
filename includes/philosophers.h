@@ -6,7 +6,7 @@
 /*   By: jbosquet <jbosquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 15:31:32 by jbosquet          #+#    #+#             */
-/*   Updated: 2022/01/18 12:20:14 by jbosquet         ###   ########.fr       */
+/*   Updated: 2022/01/28 11:58:43 by jbosquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,7 @@ suseconds_t	time_diff(suseconds_t time1, suseconds_t time2);
 void		print_action(int action, int philo_id, t_philos *philos);
 int			check_death(t_philos *philos);
 int			check_nb_eat(t_philos *philos);
+void		free_philo(t_philos *philos);
+void		smart_sleep(long time);
 
 #endif

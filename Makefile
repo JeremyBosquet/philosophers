@@ -28,6 +28,7 @@ SRCS :=		main.c \
 			init/init.c \
 			functions/get_time.c \
 			functions/print_action.c \
+			functions/smart_sleep.c
 
 OBJS := $(addprefix objs/, $(SRCS:.c=.o))
 

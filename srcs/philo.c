@@ -6,7 +6,7 @@
 /*   By: jbosquet <jbosquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 12:40:14 by jbosquet          #+#    #+#             */
-/*   Updated: 2022/01/19 16:59:56 by jbosquet         ###   ########.fr       */
+/*   Updated: 2022/01/28 11:58:18 by jbosquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	p_eat(t_philos *philos, int i)
 {
-	//pthread_mutex_lock(&philos->philo[i].mutex);
+	pthread_mutex_lock(&philos->philo[i].mutex);
 	pthread_mutex_lock(&philos->philo[i].fork_r);
 	print_action(FORK, philos->philo[i].id, philos);
 	pthread_mutex_lock(philos->philo[i].fork_l);
@@ -22,10 +22,10 @@ void	p_eat(t_philos *philos, int i)
 	philos->philo[i].last_eat = get_time();
 	print_action(EAT, philos->philo[i].id, philos);
 	philos->philo[i].nb_eat++;
-	usleep(philos->time_eat * 1000);
+	smart_sleep(philos->time_eat);
 	pthread_mutex_unlock(philos->philo[i].fork_l);
 	pthread_mutex_unlock(&philos->philo[i].fork_r);
-	//pthread_mutex_unlock(&philos->philo[i].mutex);
+	pthread_mutex_unlock(&philos->philo[i].mutex);
 }
 
 int	check_death(t_philos *philos)
@@ -41,7 +41,7 @@ int	check_death(t_philos *philos)
 				get_time()) > philos->time_die)
 		{
 			print_action(DIE, philos->philo[i].id, philos);
-			philos->died = 1;
+			philos->started = 0;
 			return (1);
 		}
 		pthread_mutex_unlock(&philos->philo[i].mutex);
@@ -57,20 +57,29 @@ int	check_nb_eat(t_philos *philos)
 
 	all_ate = 0;
 	i = 0;
-	if (philos->started && philos->must_eat != -1)
+	while (i < philos->nb_philo)
 	{
-		while (i < philos->nb_philo)
-			if (philos->philo[i++].nb_eat >= philos->must_eat)
-				all_ate++;
-		if (all_ate == philos->nb_philo)
-		{
-			philos->all_ate = 1;
-			return (1);
-		}
-		else
+		if (philos->philo[i].nb_eat < philos->must_eat)
 			return (0);
+		i++;
 	}
-	return (0);
+	philos->all_ate = 1;
+	philos->started = 0;
+	return (1);
+}
+
+void	philo_sleep(t_philos *philos, int i)
+{
+	long	cur_time;
+	long	period_of_time;
+
+	if (philos->started && !philos->all_ate)
+	{
+		cur_time = get_time();
+		period_of_time = get_time() + (philos->time_sleep);
+		print_action(SLEEP, philos->philo[i].id, philos);
+		smart_sleep(philos->time_sleep);
+	}
 }
 
 void	*philo(void *param)
@@ -81,24 +90,23 @@ void	*philo(void *param)
 	args = (t_args *)param;
 	i = args->i;
 	if (args->i + 1 == args->philos->nb_philo)
+	{
 		args->philos->started = 1;
+		args->philos->start_time = get_time();
+	}
+	while (!args->philos->started)
+		i = i + 1 - 1;
 	if (args->philos->philo[i].id % 2)
 		usleep(1500);
-	while (!check_death(args->philos))
+	while (args->philos->started && !check_death(args->philos))
 	{
-		if (!args->philos->all_ate)
-		{
-			p_eat(args->philos, i);
-			if (args->philos->must_eat != -1 && args->philos->all_ate)
-				return (NULL);
-			if (!args->philos->all_ate)
-				print_action(SLEEP, args->philos->philo[i].id, args->philos);
-			usleep(args->philos->time_sleep * 1000);
-			if (!args->philos->all_ate)
-				print_action(THINK, args->philos->philo[i].id, args->philos);
-		}
-		else
+		p_eat(args->philos, i);
+		if (args->philos->all_ate)
 			return (NULL);
+		if (args->philos->started)
+			philo_sleep(args->philos, i);
+		if (args->philos->started)
+			print_action(THINK, args->philos->philo[i].id, args->philos);
 	}
 	return (NULL);
 }
