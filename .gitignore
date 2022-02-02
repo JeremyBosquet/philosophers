@@ -54,5 +54,4 @@ dkms.conf
 .VS_Code
 .vscode
 README.md
-objs
-philo
+philo/objs
