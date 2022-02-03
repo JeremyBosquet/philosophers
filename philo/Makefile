@@ -41,38 +41,38 @@ INCLUDE := $(addprefix -I,$(dir $(HEADER_SRCS)))
 NAME := $(PROJECT)
 
 all: start $(NAME)
-	@printf "$(_GREEN)$(_BOLD)Done.\n"
+	printf "$(_GREEN)$(_BOLD)Done.\n"
 
 $(NAME): Makefile $(OBJS)
-	@$(CC) $(CFLAGS) $(INCLUDE) $(OBJS) -o $@
-	@printf "%-30b%b" "\033[2K\r$(_GREEN)  $@" "$(_BOLD)[OK]$(_END)\n\n"
+	$(CC) $(CFLAGS) $(INCLUDE) $(OBJS) -o $@
+	printf "%-30b%b" "\033[2K\r$(_GREEN)  $@" "$(_BOLD)[OK]$(_END)\n\n"
 
 $(OBJS): | $(OBJS_DIRS)
 
 $(OBJS_DIRS):
-	@mkdir -p $@
-	@printf "%-30b%b" "\033[2K\r$(_GREEN)  $(NAME)" "$(_CYAN)[$@ created]$(_END)\n"
+	mkdir -p $@
+	printf "%-30b%b" "\033[2K\r$(_GREEN)  $(NAME)" "$(_CYAN)[$@ created]$(_END)\n"
 
 objs/%.o: srcs/%.c $(HEADER_SRCS)
-	@printf "%-30b%b" "\033[2K\r$(_YELLOW)  $(NAME)" "\033[1m[$<]\033[0m"
-	@$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
+	printf "%-30b%b" "\033[2K\r$(_YELLOW)  $(NAME)" "\033[1m[$<]\033[0m"
+	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
 start:
-	@printf "$(_CYAN)$(_BOLD)Compilation:$(_END)\n"
+	printf "$(_CYAN)$(_BOLD)Compilation:$(_END)\n"
 
 clean:
-	@rm -rf $(OBJS)
-	@printf "\033[2K\r$(_RED)$(NAME): All objects files have been deleted. $(_END)\n"
+	rm -rf $(OBJS)
+	printf "\033[2K\r$(_RED)$(NAME): All objects files have been deleted. $(_END)\n"
 
 fclean: clean
-	@$(RM) $(NAME)
-	@printf "\033[2K\r$(_RED)$(NAME): '"$(NAME)"' has been deleted. $(_END)\n\n"
+	$(RM) $(NAME)
+	printf "\033[2K\r$(_RED)$(NAME): '"$(NAME)"' has been deleted. $(_END)\n\n"
 
 ffclean:
-	@rm -rf $(OBJS_DIRS)
-	@$(RM) $(NAME)
-	@printf "\033[2K\r$(_RED)$(NAME): objs folder has been deleted. $(_END)\n"
-	@printf "\033[2K\r$(_RED)$(NAME): '"$(NAME)"' has been deleted. $(_END)\n"
+	rm -rf $(OBJS_DIRS)
+	$(RM) $(NAME)
+	printf "\033[2K\r$(_RED)$(NAME): objs folder has been deleted. $(_END)\n"
+	printf "\033[2K\r$(_RED)$(NAME): '"$(NAME)"' has been deleted. $(_END)\n"
 
 re: fclean all
 
@@ -80,3 +80,5 @@ norme:
 	@norminette
 
 .PHONY: all start clean fclean ffclean re norme
+
+.SILENT:

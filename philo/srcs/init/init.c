@@ -6,18 +6,18 @@
 /*   By: jbosquet <jbosquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 14:27:37 by jbosquet          #+#    #+#             */
-/*   Updated: 2022/02/02 11:18:20 by jbosquet         ###   ########.fr       */
+/*   Updated: 2022/02/02 11:49:28 by jbosquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-static void	ft_hard_one(int time_die)
+static int	ft_hard_one(int time_die)
 {
 	write(1, "0 1 has taken a fork\n", 21);
 	smart_sleep(time_die);
 	printf("%d 1 died\n", time_die);
-	exit(EXIT_FAILURE);
+	return (0);
 }
 
 static void	init_philos(t_philos *philos)
@@ -72,7 +72,7 @@ int	init(char **argv, int argc, t_philos *philos)
 	if (!philos->time_eat || !philos->time_sleep)
 		return (0);
 	if (philos->nb_philo == 1)
-		ft_hard_one(philos->time_die);
+		return (ft_hard_one(philos->time_die));
 	if (argc == 5)
 		philos->must_eat = -1;
 	else if (argc == 6)
