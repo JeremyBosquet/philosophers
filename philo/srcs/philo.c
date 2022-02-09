@@ -21,7 +21,8 @@ void	p_eat(t_philos *philos, int i)
 	print_action(FORK, philos->philo[i].id, philos);
 	philos->philo[i].last_eat = get_time();
 	print_action(EAT, philos->philo[i].id, philos);
-	philos->philo[i].nb_eat++;
+	if (philos->philo[i].nb_eat < philos->must_eat)
+		philos->philo[i].nb_eat++;
 	smart_sleep(philos->time_eat);
 	pthread_mutex_unlock(philos->philo[i].fork_l);
 	pthread_mutex_unlock(&philos->philo[i].fork_r);
@@ -30,22 +31,25 @@ void	p_eat(t_philos *philos, int i)
 
 int	check_death(t_philos *philos)
 {
-	int	i;
+	suseconds_t	time;
+	int			i;
 
 	i = 0;
-	while (philos->started && i < philos->nb_philo)
+	while (philos->started)
 	{
-		pthread_mutex_lock(&philos->philo[i].mutex);
-		if (philos->philo[i].last_eat != 0
-			&& time_diff(philos->philo[i].last_eat,
-				get_time()) > philos->time_die)
+		time = get_time();
+		i = 0;
+		while (i < philos->nb_philo)
 		{
-			print_action(DIE, philos->philo[i].id, philos);
-			philos->started = 0;
-			return (1);
+			if (time - philos->philo[i].last_eat > philos->time_die)
+			{
+				print_action(DIE, philos->philo[i].id, philos);
+				philos->started = 0;
+				return (1);
+			}
+			i++;
+			check_nb_eat(philos);
 		}
-		pthread_mutex_unlock(&philos->philo[i].mutex);
-		i++;
 	}
 	return (0);
 }
@@ -57,6 +61,8 @@ int	check_nb_eat(t_philos *philos)
 
 	all_ate = 0;
 	i = 0;
+	if (philos->must_eat == -1)
+		return (0);
 	while (i < philos->nb_philo)
 	{
 		if (philos->philo[i].nb_eat < philos->must_eat)
@@ -66,20 +72,6 @@ int	check_nb_eat(t_philos *philos)
 	philos->all_ate = 1;
 	philos->started = 0;
 	return (1);
-}
-
-void	philo_sleep(t_philos *philos, int i)
-{
-	long	cur_time;
-	long	period_of_time;
-
-	if (philos->started && !philos->all_ate)
-	{
-		cur_time = get_time();
-		period_of_time = get_time() + (philos->time_sleep);
-		print_action(SLEEP, philos->philo[i].id, philos);
-		smart_sleep(philos->time_sleep);
-	}
 }
 
 void	*philo(void *param)
@@ -98,13 +90,13 @@ void	*philo(void *param)
 		i = i + 1 - 1;
 	if (args->philos->philo[i].id % 2)
 		usleep(1500);
-	while (args->philos->started && !check_death(args->philos))
+	while (args->philos->started)
 	{
 		p_eat(args->philos, i);
 		if (args->philos->all_ate)
-			return (NULL);
-		if (args->philos->started)
-			philo_sleep(args->philos, i);
+			break ;
+		print_action(SLEEP, args->philos->philo[i].id, args->philos);
+		smart_sleep(args->philos->time_sleep);
 		if (args->philos->started)
 			print_action(THINK, args->philos->philo[i].id, args->philos);
 	}

@@ -33,6 +33,7 @@ static void	init_philos(t_philos *philos)
 		philos->philo[i - 1].id = i;
 		philos->philo[i - 1].nb_eat = 0;
 		philos->philo[i - 1].dead = 0;
+		philos->philo[i - 1].last_eat = 0;
 		if (i != 1 && i != philos->nb_philo)
 			philos->philo[i - 1].fork_l = &philos->philo[i - 2].fork_r;
 		else if (i == philos->nb_philo)

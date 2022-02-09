@@ -17,14 +17,20 @@ void	free_philo(t_philos *philos)
 	int	i;
 
 	i = 0;
-	free(philos->philo);
-	free(philos->fork);
 	while (i < philos->nb_philo)
 	{
-		pthread_mutex_destroy(&philos->philo[i].mutex);
-		pthread_join(philos->philo[i++].thread, NULL);
+		pthread_join(philos->philo[i].thread, NULL);
+		i++;
+	}
+	i = 0;
+	while (i < philos->nb_philo)
+	{
+		pthread_mutex_destroy(&philos->philo[i].fork_r);
+		i++;
 	}
 	pthread_mutex_destroy(&philos->write_mutex);
+	free(philos->philo);
+	free(philos->fork);
 }
 
 int	main(int argc, char **argv)
@@ -36,6 +42,7 @@ int	main(int argc, char **argv)
 	if (!init(argv, argc, &philos))
 		return (EXIT_FAILURE);
 	threads_start(&philos);
+	check_death(&philos);
 	while (1)
 	{
 		if (philos.must_eat != -1 && check_nb_eat(&philos))
